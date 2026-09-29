@@ -1,7 +1,7 @@
 .Second-layout {
   margin: 10px auto;
-  padding-left: 20rem;
-  padding-right: 20rem;
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
