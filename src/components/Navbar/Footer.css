@@ -1,6 +1,13 @@
+/* ============================================================
+   FOOTER
+   Usa variables definidas en index.css (.dark / .light)
+   ============================================================ */
+
 .site-footer {
-  border-top: 1px solid rgba(229, 229, 229, 0.6);
-  background-color: #ffffff;
+  /* Borde superior sutil */
+  border-top: 1px solid var(--color-border);
+  /* Fondo de superficie (tarjeta/panel) */
+  background-color: var(--color-bg-surface);
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
@@ -16,7 +23,8 @@
   align-items: center;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: #737373;
+  /* Texto silenciado para información secundaria del footer */
+  color: var(--color-text-muted);
 }
 
 .footer-container p {
@@ -26,6 +34,19 @@
 .footer-description {
   font-weight: 300;
   margin-top: 0.5rem;
+}
+
+/* Enlace de acento en el footer */
+.footer-container a {
+  /* Acento azul para enlaces */
+  color: var(--color-accent-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-container a:hover {
+  /* Color primario al hover */
+  color: var(--color-primary);
 }
 
 @media (min-width: 640px) {

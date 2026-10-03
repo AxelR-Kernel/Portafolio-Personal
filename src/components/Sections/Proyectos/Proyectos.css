@@ -1,0 +1,10 @@
+/* ============================================================
+   SECCIÓN PROYECTOS
+   Usa variables definidas en index.css (.dark / .light)
+   ============================================================ */
+
+.proyectos-section {
+  /* Borde superior de separación entre secciones */
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 1rem;
+}

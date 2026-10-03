@@ -1,0 +1,70 @@
+/* ============================================================
+   SECCIÓN SOBRE MÍ
+   Usa variables definidas en index.css (.dark / .light)
+   ============================================================ */
+
+.sobre-mi-section {
+  /* Espaciado superior equivalente al mt-28 del diseño original */
+  margin-top: 7rem;
+  padding-top: 4rem;
+  /* Borde superior de separación entre secciones */
+  border-top: 1px solid var(--color-border);
+  /* Padding horizontal alineado con el resto de secciones */
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
+  padding-bottom: 4rem;
+}
+
+/* Grid de 3 columnas: etiqueta | contenido (×2) */
+.sobre-mi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Etiqueta de sección — texto pequeño en mayúsculas */
+.sobre-mi-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  /* Texto silenciado — igual que neutral-400 del diseño original */
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Columna de contenido */
+.sobre-mi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Párrafo principal */
+.sobre-mi-text {
+  /* Texto secundario — neutral-600 equivalente */
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  line-height: 1.75;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablet y desktop — 3 columnas, contenido ocupa 2 */
+@media (min-width: 768px) {
+  .sobre-mi-grid {
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .sobre-mi-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}

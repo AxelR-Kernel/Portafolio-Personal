@@ -1,0 +1,220 @@
+/* ============================================================
+   STARMODEL — ASCII Bot 3D interactivo
+   Prefijo "sm-" para evitar colisiones de nombres globales.
+   Usa variables definidas en index.css (.dark / .light)
+   ============================================================ */
+
+/* Contenedor de la escena — se incrusta en el hero */
+.sm-scene {
+  position: relative;
+  width: min(90%, 480px);
+  height: min(90%, 480px);
+  /* Centra el bot dentro del contenedor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Perspectiva 3D para el tilt del cuerpo */
+  perspective: 900px;
+  perspective-origin: 50% 40%;
+  isolation: isolate;
+  /* Sin interacción propia — el mouse pasa al window */
+  pointer-events: none;
+  flex-shrink: 0;
+  /*
+   * overflow: visible permite que el bot sobresalga al hacer tilt
+   * sin ser recortado por los bordes del contenedor
+   */
+  overflow: visible;
+}
+
+/* Halo de luz difusa detrás del bot */
+.sm-glow {
+  position: absolute;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(108, 112, 229, 0.12),   /* --color-primary con alpha */
+    rgba(108, 112, 229, 0.04) 45%,
+    transparent 70%
+  );
+  filter: blur(35px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Contenedor de la lluvia matrix */
+#sm-matrix {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Cada carácter de la lluvia matrix */
+.sm-matrix-char {
+  position: absolute;
+  top: -30px;
+  /* Acento azul — --color-accent-blue */
+  color: var(--color-accent-blue, #78a4f6);
+  font-family: "Courier New", monospace;
+  font-size: clamp(10px, 4vw, 22px);
+  font-weight: 600;
+  opacity: 0;
+  /* Halo más pronunciado para mejor visibilidad */
+  text-shadow:
+    0 0 6px var(--color-accent-blue, #78a4f6),
+    0 0 14px rgba(120, 164, 246, 0.5);
+  animation: sm-matrixFall linear forwards;
+}
+
+@keyframes sm-matrixFall {
+  0% {
+    transform: translate3d(0, -30px, 0);
+    opacity: 0;
+  }
+  8% {
+    /* Aparece rápido y brillante */
+    opacity: 0.9;
+  }
+  40% {
+    opacity: 0.65;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate3d(0, 760px, 0);
+    opacity: 0;
+  }
+}
+
+/* Animación de flotación vertical del bot */
+.sm-bot-float {
+  animation: sm-floating 5.8s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes sm-floating {
+  0%   { transform: translate3d(0, 0, 0); }
+  25%  { transform: translate3d(1px, -3px, 0); }
+  50%  { transform: translate3d(0, -7px, 0); }
+  75%  { transform: translate3d(-1px, -3px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Contenedor del tilt 3D — se actualiza vía JS */
+.sm-bot-tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateZ(0);
+  transition: transform 120ms ease-out;
+}
+
+/* Wrapper que agrupa cuerpo + estrella + ojos */
+.sm-ascii-wrapper {
+  position: relative;
+  display: block;
+  transform-style: preserve-3d;
+}
+
+/* Cuerpo ASCII principal */
+.sm-bot-body {
+  margin: 0;
+  font-size: clamp(4px, 0.65vw, 8px);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+  /* Color primario del tema — índigo */
+  color: var(--color-primary, #6c70e5);
+  text-shadow: 0 0 4px rgba(108, 112, 229, 0.25);
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 1px rgba(108, 112, 229, 0.12));
+  transform: translateZ(0px);
+  transform-style: preserve-3d;
+}
+
+/* Estrella ASCII con paralaje en Z */
+.sm-bot-star {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  font-size: clamp(4px, 0.65vw, 8px);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+  /* Color de énfasis — naranja/amarillo del tema */
+  color: var(--color-emphasis, #f7981a);
+  z-index: 4;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  text-shadow:
+    0 0 0 var(--color-bg-primary, #0f1115),
+    1px 0 0 var(--color-bg-primary, #0f1115),
+    -1px 0 0 var(--color-bg-primary, #0f1115),
+    0 1px 0 var(--color-bg-primary, #0f1115),
+    0 -1px 0 var(--color-bg-primary, #0f1115),
+    1px 1px 0 var(--color-bg-primary, #0f1115),
+    -1px -1px 0 var(--color-bg-primary, #0f1115),
+    1px -1px 0 var(--color-bg-primary, #0f1115),
+    -1px 1px 0 var(--color-bg-primary, #0f1115),
+    0 0 6px rgba(247, 152, 26, 0.55),
+    0 0 12px rgba(247, 152, 26, 0.25);
+  will-change: transform;
+  transform: translate3d(
+      calc(var(--star-base-x, 0px) + var(--star-x, 0px)),
+      calc(var(--star-base-y, 0px) + var(--star-y, 0px)),
+      12px
+    )
+    rotate(var(--star-rotate, 0deg));
+}
+
+/* Ojos ASCII — siguen al cursor con interpolación más rápida */
+.sm-eye {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  /* Color primario del tema */
+  color: var(--color-primary, #6c70e5);
+  font-size: clamp(4px, 0.65vw, 8px);
+  line-height: 1;
+  white-space: pre;
+  pointer-events: none;
+  z-index: 5;
+  transform-style: preserve-3d;
+  transform: translate3d(var(--eye-x, 0px), var(--eye-y, 0px), 0px);
+  transition: transform 120ms ease-out;
+  text-shadow: 0 0 4px rgba(108, 112, 229, 0.3);
+  margin: 0;
+}
+
+#sm-eye-left {
+  left: 28%;
+  top: 18%;
+}
+
+#sm-eye-right {
+  left: 58%;
+  top: 18%;
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .sm-bot-float {
+    animation: none;
+  }
+  .sm-matrix-char {
+    display: none;
+  }
+  .sm-bot-tilt,
+  .sm-eye,
+  .sm-bot-star {
+    transition: none;
+  }
+}

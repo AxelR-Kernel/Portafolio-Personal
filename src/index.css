@@ -1,10 +1,140 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
 
+/* ============================================================
+   PALETA DE COLORES — SISTEMA DE TEMAS
+   Aplicar clase "dark" o "light" al elemento raíz <div id="root">
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   🌙 TEMA OSCURO (Dark Mode) — clase: .dark
+   ------------------------------------------------------------ */
+.dark {
+  /* Fondo principal — fondo oscuro profundo */
+  --color-bg-primary: #0f1115;
+
+  /* Fondo de tarjetas y superficies — translúcido sobre fondo oscuro */
+  --color-bg-surface: rgba(25, 30, 40, 0.75);
+
+  /* Fondo alternativo — variante intermedia para secciones */
+  --color-bg-alt: #161921;
+
+  /* Texto principal — blanco puro para máxima claridad */
+  --color-text-primary: #fdffff;
+
+  /* Texto secundario — gris claro para contenido de menor jerarquía */
+  --color-text-secondary: #a8b3c4;
+
+  /* Texto silenciado — para placeholders y metainformación */
+  --color-text-muted: #6b7690;
+
+  /* Texto acento / enlaces — azul claro de gran visibilidad */
+  --color-accent-blue: #78a4f6;
+
+  /* Color primario — morado/índigo para botones y CTA principales */
+  --color-primary: #6c70e5;
+
+  /* Color primario hover — versión más oscura del primario */
+  --color-primary-hover: #5a5ec9;
+
+  /* Color de énfasis / alertas / badges — naranja vibrante */
+  --color-emphasis: #f7981a;
+
+  /* Color de énfasis hover */
+  --color-emphasis-hover: #e8870d;
+
+  /* Color de éxito — verde para disponibilidad */
+  --color-success: #34d399;
+
+  /* Borde sutil — azul muy transparente */
+  --color-border: rgba(120, 164, 246, 0.2);
+
+  /* Borde de separación más sutil */
+  --color-border-subtle: rgba(120, 164, 246, 0.1);
+
+  /* Sombra de tarjetas */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* Sombra de botones */
+  --shadow-button: 0 2px 8px rgba(108, 112, 229, 0.35);
+
+  /* Color de fondo del navbar (blur) */
+  --color-navbar-bg: rgba(15, 17, 21, 0.85);
+
+  /* Color de fondo del badge de disponibilidad */
+  --color-badge-bg: rgba(52, 211, 153, 0.12);
+
+  /* Color del texto del badge */
+  --color-badge-text: #34d399;
+}
+
+/* ------------------------------------------------------------
+   ☀️ TEMA CLARO (Light Mode) — clase: .light
+   ------------------------------------------------------------ */
+.light {
+  /* Fondo principal — blanco puro como lienzo limpio */
+  --color-bg-primary: #fdffff;
+
+  /* Fondo de tarjetas y superficies — blanco puro con sombra */
+  --color-bg-surface: #ffffff;
+
+  /* Fondo alternativo — gris muy claro para secciones alternas */
+  --color-bg-alt: #f4f5f9;
+
+  /* Texto principal — gris muy oscuro para cuidar la salud visual */
+  --color-text-primary: #1e232a;
+
+  /* Texto secundario — gris medio para contenido de menor jerarquía */
+  --color-text-secondary: #4a5568;
+
+  /* Texto silenciado — para placeholders y metainformación */
+  --color-text-muted: #9aa3b2;
+
+  /* Texto acento / enlaces — azul ajustado para cumplir contraste */
+  --color-accent-blue: #5584e0;
+
+  /* Color primario — índigo consistente con el modo oscuro */
+  --color-primary: #6c70e5;
+
+  /* Color primario hover — versión más oscura del primario */
+  --color-primary-hover: #5a5ec9;
+
+  /* Color de énfasis / alertas / badges — naranja más profundo */
+  --color-emphasis: #e6860d;
+
+  /* Color de énfasis hover */
+  --color-emphasis-hover: #c97309;
+
+  /* Color de éxito — verde para disponibilidad */
+  --color-success: #10b981;
+
+  /* Borde sutil — índigo muy transparente */
+  --color-border: rgba(108, 112, 229, 0.15);
+
+  /* Borde de separación más sutil */
+  --color-border-subtle: rgba(108, 112, 229, 0.08);
+
+  /* Sombra de tarjetas */
+  --shadow-card: 0 2px 16px rgba(30, 35, 42, 0.08);
+
+  /* Sombra de botones */
+  --shadow-button: 0 2px 8px rgba(108, 112, 229, 0.25);
+
+  /* Color de fondo del navbar (blur) */
+  --color-navbar-bg: rgba(253, 255, 255, 0.88);
+
+  /* Color de fondo del badge de disponibilidad */
+  --color-badge-bg: rgba(16, 185, 129, 0.1);
+
+  /* Color del texto del badge */
+  --color-badge-text: #0d9965;
+}
+
+/* ============================================================
+   ESTILOS BASE GLOBALES
+   ============================================================ */
+
 :root {
   font-family: "Lexend", sans-serif;
-  background-color: #fafafa;
-  color: #171717;
-  line-height: 1.5;
 }
 
 body {
@@ -15,6 +145,34 @@ body {
   flex-direction: column;
 }
 
+/* Transición suave al cambiar de tema */
+.dark,
+.light {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Aplicar fondo y color de texto al contenedor raíz */
+.dark,
+.light {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
+
 * {
   box-sizing: border-box;
+}
+
+/* Transición global para todos los elementos */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }

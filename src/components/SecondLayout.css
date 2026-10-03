@@ -1,9 +1,21 @@
+/* ============================================================
+   SECOND LAYOUT
+   Contenedor interior para secciones con padding horizontal.
+   Usa variables definidas en index.css (.dark / .light)
+   ============================================================ */
+
 .Second-layout {
   margin: 10px auto;
   padding-left: calc(100vw - 84%);
   padding-right: calc(100vw - 84%);
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+/* Separador horizontal entre secciones dentro de SecondLayout */
+.Second-layout + .Second-layout {
+  /* Borde sutil entre bloques consecutivos */
+  border-top: 1px solid var(--color-border-subtle);
 }
 
 @media (max-width: 640px) {
