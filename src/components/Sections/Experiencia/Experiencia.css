@@ -1,10 +1,157 @@
 /* ============================================================
-   SECCIÓN EXPERIENCIA
+   SECCIÓN EXPERIENCIA — línea de tiempo descendente
+   Mismo patrón de layout que SobreMi.
    Usa variables definidas en index.css (.dark / .light)
    ============================================================ */
 
 .experiencia-section {
+  margin-top: 0;
+  padding-top: 4rem;
   /* Borde superior de separación entre secciones */
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  /* Padding horizontal alineado con SobreMi */
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
+  padding-bottom: 4rem;
+}
+
+/* Grid 2 columnas: etiqueta | contenido (×2) — igual que SobreMi */
+.experiencia-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Etiqueta de sección — mismo estilo que sobre-mi-label */
+.experiencia-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  /* Texto silenciado */
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Columna de contenido */
+.experiencia-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   LÍNEA DE TIEMPO
+   ============================================================ */
+
+/* Lista sin estilo por defecto */
+.exp-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cada ítem de la línea de tiempo */
+.exp-item {
+  display: flex;
+  gap: 1.25rem;
+  /* Sin margen extra — el conector llena el espacio entre ítems */
+}
+
+/* Columna de la línea vertical (nodo + conector) */
+.exp-line-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Ancho fijo para alinear con el contenido */
+  flex-shrink: 0;
+  width: 1rem;
+}
+
+/* Nodo circular en la línea de tiempo */
+.exp-node {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  /* Borde con color primario — índigo */
+  border: 1.5px solid var(--color-primary);
+  /* Relleno con fondo de superficie para simular "hueco" */
+  background-color: var(--color-bg-primary);
+  flex-shrink: 0;
+  /* Alineado con la primera línea del título */
+  margin-top: 0.35rem;
+}
+
+/* Línea vertical que conecta nodos consecutivos */
+.exp-connector {
+  flex: 1;
+  width: 1px;
+  /* Borde sutil del tema */
+  background-color: var(--color-border);
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+  /* Mínimo para que la línea siempre sea visible */
+  min-height: 1.5rem;
+}
+
+/* Cuerpo de texto del ítem */
+.exp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Último ítem sin padding inferior extra */
+.exp-item:last-child .exp-body {
+  padding-bottom: 0;
+}
+
+/* Título del proyecto / experiencia */
+.exp-titulo {
+  font-size: 0.9rem;
+  font-weight: 500;
+  /* Texto principal del tema */
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Rol / cargo */
+.exp-rol {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* Acento azul del tema */
+  color: var(--color-accent-blue);
+}
+
+/* Descripción del logro */
+.exp-descripcion {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.75;
+  /* Texto secundario */
+  color: var(--color-text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width: 768px) {
+  .experiencia-grid {
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .experiencia-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
