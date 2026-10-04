@@ -1,10 +1,215 @@
 /* ============================================================
-   SECCIÓN HABILIDADES
+   SECCIÓN HABILIDADES — carrusel full-width de 3 filas (muro)
    Usa variables definidas en index.css (.dark / .light)
    ============================================================ */
 
 .habilidades-section {
-  /* Borde superior de separación entre secciones */
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Encabezado — respeta el ancho del layout padre */
+.habilidades-header {
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
+  margin-bottom: 2.5rem;
+}
+
+.habilidades-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ============================================================
+   CARRUSEL FULL-WIDTH
+   Técnica: width 100vw + left 50% + translateX(-50%)
+   rompe el padding del contenedor sin tocar el encabezado.
+   ============================================================ */
+
+.carrusel-fullwidth {
+  width: calc(100vw - 5%);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+/* Máscara de difuminado lateral sobre las 3 filas a la vez */
+.carrusel-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.6rem; */
+  gap: 1.5rem;
+  padding: 0.25rem 0;
+}
+
+/* ============================================================
+   FILA DE CARRUSEL
+   ============================================================ */
+
+.carrusel-fila-wrapper {
+  overflow: hidden;
+}
+
+/*
+ * Track — estructura: [grupo-A] [grupo-B]
+ *
+ * Cada grupo tiene el mismo ancho porque contiene los mismos chips.
+ * La animación desplaza exactamente translateX(-50%), lo que equivale
+ * al ancho de UN grupo completo → el reset es pixel-perfect e invisible.
+ *
+ * NO hay nada entre los grupos (ni gaps ni separadores en el flujo),
+ * así el 50% siempre coincide con el borde exacto entre A y B.
+ */
+.carrusel-track {
+  display: flex;
+  align-items: center;
+  /* Sin gap entre grupos — el espaciado lo maneja .carrusel-grupo */
+  gap: 0;
+  width: max-content;
+  animation: scroll-left linear infinite;
+}
+
+.carrusel-fila-wrapper.reverso .carrusel-track {
+  animation-name: scroll-right;
+}
+
+.carrusel-mask:hover .carrusel-track {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* ============================================================
+   GRUPO DE CHIPS
+   Un grupo = una copia completa de la fila.
+   El separador visual está implementado como ::after posicionado
+   absolutamente al final del grupo, de modo que no afecta al
+   ancho del grupo ni al punto de reset de la animación.
+   ============================================================ */
+
+.carrusel-grupo {
+  display: flex;
+  align-items: center;
+  /* gap: 0.6rem; */
+  gap: 4.5rem;
+  /* El padding-right reserva espacio para el separador absoluto
+     sin que este empuje el siguiente grupo */
+  padding-left: 0.6rem;
+  padding-right: 2.5rem;
+  position: relative;
+}
+
+/* Línea vertical separadora — fuera del flujo, no suma ancho al grupo */
+.carrusel-grupo::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 1.6rem;
+  background-color: var(--color-border);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* ============================================================
+   CHIP DE HABILIDAD
+   ============================================================ */
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: default;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.skill-chip:hover {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 1px var(--color-accent-blue), var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+/* Icono — color primario uniforme en ambos temas */
+.skill-icon {
+  color: var(--color-primary) !important;
+  flex-shrink: 0;
+}
+
+.skill-nombre {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  line-height: 1;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .habilidades-header {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carrusel-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .carrusel-fullwidth {
+    overflow: visible;
+  }
+
+  .carrusel-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .carrusel-grupo::after {
+    display: none;
+  }
 }
