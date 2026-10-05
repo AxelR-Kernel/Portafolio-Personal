@@ -1,5 +1,5 @@
 /* ============================================================
-   SECCIÓN HABILIDADES — carrusel full-width de 3 filas (muro)
+   SECCIÓN HABILIDADES — carrusel full-width + tabla de categorías
    Usa variables definidas en index.css (.dark / .light)
    ============================================================ */
 
@@ -27,8 +27,6 @@
 
 /* ============================================================
    CARRUSEL FULL-WIDTH
-   Técnica: width 100vw + left 50% + translateX(-50%)
-   rompe el padding del contenedor sin tocar el encabezado.
    ============================================================ */
 
 .carrusel-fullwidth {
@@ -39,7 +37,6 @@
   overflow: hidden;
 }
 
-/* Máscara de difuminado lateral sobre las 3 filas a la vez */
 .carrusel-mask {
   -webkit-mask-image: linear-gradient(
     to right,
@@ -57,33 +54,17 @@
   );
   display: flex;
   flex-direction: column;
-  /* gap: 0.6rem; */
   gap: 1.5rem;
   padding: 0.25rem 0;
 }
-
-/* ============================================================
-   FILA DE CARRUSEL
-   ============================================================ */
 
 .carrusel-fila-wrapper {
   overflow: hidden;
 }
 
-/*
- * Track — estructura: [grupo-A] [grupo-B]
- *
- * Cada grupo tiene el mismo ancho porque contiene los mismos chips.
- * La animación desplaza exactamente translateX(-50%), lo que equivale
- * al ancho de UN grupo completo → el reset es pixel-perfect e invisible.
- *
- * NO hay nada entre los grupos (ni gaps ni separadores en el flujo),
- * así el 50% siempre coincide con el borde exacto entre A y B.
- */
 .carrusel-track {
   display: flex;
   align-items: center;
-  /* Sin gap entre grupos — el espaciado lo maneja .carrusel-grupo */
   gap: 0;
   width: max-content;
   animation: scroll-left linear infinite;
@@ -107,27 +88,15 @@
   to   { transform: translateX(0); }
 }
 
-/* ============================================================
-   GRUPO DE CHIPS
-   Un grupo = una copia completa de la fila.
-   El separador visual está implementado como ::after posicionado
-   absolutamente al final del grupo, de modo que no afecta al
-   ancho del grupo ni al punto de reset de la animación.
-   ============================================================ */
-
 .carrusel-grupo {
   display: flex;
   align-items: center;
-  /* gap: 0.6rem; */
   gap: 4.5rem;
-  /* El padding-right reserva espacio para el separador absoluto
-     sin que este empuje el siguiente grupo */
   padding-left: 0.6rem;
   padding-right: 2.5rem;
   position: relative;
 }
 
-/* Línea vertical separadora — fuera del flujo, no suma ancho al grupo */
 .carrusel-grupo::after {
   content: "";
   position: absolute;
@@ -141,10 +110,7 @@
   pointer-events: none;
 }
 
-/* ============================================================
-   CHIP DE HABILIDAD
-   ============================================================ */
-
+/* ── Chip del carrusel ── */
 .skill-chip {
   display: inline-flex;
   align-items: center;
@@ -169,7 +135,6 @@
   transform: translateY(-2px);
 }
 
-/* Icono — color primario uniforme en ambos temas */
 .skill-icon {
   color: var(--color-primary) !important;
   flex-shrink: 0;
@@ -183,16 +148,150 @@
 }
 
 /* ============================================================
+   TABLA DE HABILIDADES POR CATEGORÍA
+   Aparece debajo del carrusel, dentro del padding del layout.
+   ============================================================ */
+
+.skills-table-wrapper {
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
+  margin-top: 3rem;
+  /* Scroll horizontal en pantallas muy pequeñas */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Tabla con borde exterior sutil */
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  /* overflow hidden necesario para que border-radius funcione en la tabla */
+  overflow: hidden;
+}
+
+/* Encabezados */
+.skills-th {
+  padding: 0.65rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* Texto silenciado — igual que la etiqueta de sección */
+  color: var(--color-text-muted);
+  /* Fondo alternativo — levemente más oscuro/claro que el fondo principal */
+  background-color: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+/* Separación entre columnas del encabezado */
+.skills-th:first-child {
+  width: 140px;
+  min-width: 120px;
+}
+
+/* Filas */
+.skills-tr {
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.skills-tr:last-child {
+  border-bottom: none;
+}
+
+.skills-tr:hover {
+  background-color: var(--color-bg-alt);
+}
+
+/* Celda de categoría */
+.skills-td-cat {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  width: 140px;
+  min-width: 120px;
+  /* Borde derecho separador */
+  border-right: 1px solid var(--color-border-subtle);
+}
+
+.skills-cat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* Celda de herramientas */
+.skills-td-items {
+  padding: 0.6rem 1rem;
+  vertical-align: middle;
+}
+
+/* Contenedor flex de badges dentro de la celda */
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+/* Badge individual — más compacto que el chip del carrusel */
+.skills-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 0.35rem;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  font-size: 0.72rem;
+  font-weight: 500;
+  /* Texto secundario */
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.skills-badge:hover {
+  border-color: var(--color-accent-blue);
+  color: var(--color-accent-blue);
+}
+
+/* Icono dentro del badge */
+.skills-badge-icon {
+  /* Color primario — índigo uniforme */
+  color: var(--color-primary) !important;
+  flex-shrink: 0;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
 @media (max-width: 640px) {
-  .habilidades-header {
+  .habilidades-header,
+  .skills-table-wrapper {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
+
+  /* En mobile la columna de categoría es más estrecha */
+  .skills-td-cat,
+  .skills-th:first-child {
+    width: 90px;
+    min-width: 80px;
+  }
+
+  .skills-cat-label {
+    font-size: 0.72rem;
+  }
 }
 
+/* Movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
   .carrusel-track {
     animation: none !important;

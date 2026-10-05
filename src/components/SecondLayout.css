@@ -20,7 +20,6 @@
 
 @media (max-width: 640px) {
   .Second-layout {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding: 1.5rem;
   }
 }

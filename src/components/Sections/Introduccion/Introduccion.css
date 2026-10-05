@@ -3,14 +3,14 @@
    Usa variables definidas en index.css (.dark / .light)
    ============================================================ */
 
-/* Layout principal: dos columnas en desktop, una en mobile */
+/* ── Layout hero: dos columnas en ≥768 px, una en mobile ── */
 .intro-section {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  margin-top: 100px;
+  margin-top: 5rem;         /* navbar height compensation */
   min-height: 520px;
 }
 
@@ -23,18 +23,13 @@
   min-width: 0;
 }
 
-/* Columna del modelo ASCII — tamaño fijo, no se encoge */
+/* Columna del modelo ASCII — tamaño fijo, no se encoge en desktop */
 .intro-model {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  /*
-   * overflow visible para que el bot no se recorte al hacer tilt 3D.
-   * La máscara desvanece los bordes sin generar un clip duro.
-   */
   overflow: visible;
-  /* Gradiente de máscara: desvanece los bordes del bot sin recortar */
   -webkit-mask-image: radial-gradient(
     ellipse 90% 90% at 50% 50%,
     black 45%,
@@ -48,30 +43,25 @@
   opacity: 0.95;
 }
 
-/* Badge de disponibilidad */
+/* ── Badge de disponibilidad ── */
 .availability-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  /* Fondo del badge — color basado en éxito/disponibilidad */
   background-color: var(--color-badge-bg);
-  /* Texto del badge — color de éxito */
   color: var(--color-badge-text);
   font-size: 0.75rem;
   font-weight: 500;
   width: fit-content;
-  /* Borde sutil del badge */
   border: 1px solid var(--color-border-subtle);
 }
 
-/* Punto pulsante de disponibilidad */
 .availability-dot {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  /* Color de éxito — verde */
   background-color: var(--color-success);
   animation: availability-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
@@ -82,28 +72,25 @@
   50%       { opacity: 0.5; }
 }
 
-/* Título principal (nombre) */
+/* ── Títulos ── */
 .intro-title {
-  font-size: 2.25rem;
+  /* Fluido: 2 rem en móvil → 3.75 rem en desktop */
+  font-size: clamp(2rem, 5vw, 3.75rem);
   font-weight: 700;
   letter-spacing: -0.025em;
-  /* Texto principal del tema */
   color: var(--color-text-primary);
   line-height: 1.1;
   margin: 0;
 }
 
-/* Subtítulo (rol profesional) — texto silenciado */
 .intro-subtitle {
-  /* Texto silenciado para subtítulo de rol */
   color: var(--color-text-muted);
   font-weight: 400;
 }
 
-/* Descripción / párrafo de presentación */
+/* ── Descripción ── */
 .intro-description {
-  font-size: 1rem;
-  /* Texto secundario para párrafos de apoyo */
+  font-size: clamp(0.9rem, 2vw, 1.125rem);
   color: var(--color-text-secondary);
   max-width: 36rem;
   line-height: 1.625;
@@ -111,7 +98,7 @@
   margin: 0;
 }
 
-/* Contenedor de botones de acción */
+/* ── Botones de acción ── */
 .intro-actions {
   display: flex;
   flex-wrap: wrap;
@@ -120,7 +107,6 @@
   padding-top: 0.5rem;
 }
 
-/* Base compartida de botones */
 .intro-button {
   display: inline-flex;
   align-items: center;
@@ -138,34 +124,23 @@
     box-shadow 0.2s ease;
 }
 
-/* Botón primario — CTA principal (Contactar ahora) */
 .intro-button-primary {
-  /* Color primario — índigo */
   background-color: var(--color-primary);
   color: #fdffff;
-  /* Sombra del botón primario */
   box-shadow: var(--shadow-button);
   border: none;
 }
-
 .intro-button-primary:hover {
-  /* Hover del primario */
   background-color: var(--color-primary-hover);
   transform: translateY(-1px);
 }
 
-/* Botón secundario — CTA secundario (Ver trayectoria) */
 .intro-button-secondary {
-  /* Fondo de superficie para botón secundario */
   background-color: var(--color-bg-surface);
-  /* Borde sutil */
   border: 1px solid var(--color-border);
-  /* Texto principal */
   color: var(--color-text-primary);
 }
-
 .intro-button-secondary:hover {
-  /* Acento azul al hover del secundario */
   border-color: var(--color-accent-blue);
   color: var(--color-accent-blue);
   transform: translateY(-1px);
@@ -175,40 +150,41 @@
    RESPONSIVE
    ============================================================ */
 
-/* Tablet — modelo más pequeño, texto se adapta */
+/* Tablet mediana — reduce gap, modelo un poco más pequeño */
 @media (max-width: 900px) {
   .intro-section {
     gap: 1.5rem;
   }
 }
 
-/* Mobile — una columna, modelo debajo del texto */
-@media (max-width: 640px) {
+/* Tablet pequeña / mobile landscape — modelo más compacto */
+@media (max-width: 768px) {
   .intro-section {
-    flex-direction: column;
-    align-items: flex-start;
+    gap: 1rem;
     min-height: auto;
-    gap: 2rem;
   }
 
+  /* El modelo se achica pero se mantiene visible */
   .intro-model {
-    /* En mobile se centra el modelo */
-    align-self: center;
-    width: 100%;
-  }
-
-  .intro-title {
-    font-size: 2.25rem;
+    flex: 0 0 220px;
+    max-width: 220px;
   }
 }
 
-/* Desktop grande — título más grande */
-@media (min-width: 640px) {
-  .intro-title {
-    font-size: 3.75rem;
+/* Mobile portrait — columna única, modelo centrado debajo del texto */
+@media (max-width: 540px) {
+  .intro-section {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 4rem;
+    gap: 1.5rem;
   }
 
-  .intro-description {
-    font-size: 1.125rem;
+  /* En móvil el modelo ocupa todo el ancho y se centra */
+  .intro-model {
+    align-self: center;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 280px;
   }
 }
