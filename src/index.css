@@ -137,6 +137,21 @@
   font-family: "Lexend", sans-serif;
 }
 
+/* ── Scroll suave global ──
+   Se aplica aquí y no en :root para que funcione en todos los navegadores.
+   El @media prefers-reduced-motion lo desactiva para usuarios que lo pidan. */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+
 body {
   margin: 0;
   padding: 0;
@@ -145,7 +160,6 @@ body {
   flex-direction: column;
 }
 
-/* Transición suave al cambiar de tema */
 .dark,
 .light {
   transition:

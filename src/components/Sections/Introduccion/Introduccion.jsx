@@ -1,6 +1,7 @@
 import "./Introduccion.css";
 import SecondLayout from "../../SeconLayout";
 import StarModel from "../../StarModel/StarModel";
+import { scrollToSection } from "../../Navbar/Navbar";
 
 const Introduccion = () => {
   return (
@@ -28,10 +29,18 @@ const Introduccion = () => {
           </p>
 
           <div className="intro-actions">
-            <a href="#contacto" className="intro-button intro-button-primary">
+            <a
+              href="#contacto"
+              className="intro-button intro-button-primary"
+              onClick={(e) => { e.preventDefault(); scrollToSection("contacto"); }}
+            >
               Contactar ahora
             </a>
-            <a href="#experiencia" className="intro-button intro-button-secondary">
+            <a
+              href="#experiencia"
+              className="intro-button intro-button-secondary"
+              onClick={(e) => { e.preventDefault(); scrollToSection("experiencia"); }}
+            >
               Ver trayectoria
             </a>
           </div>

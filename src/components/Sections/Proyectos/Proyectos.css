@@ -1,10 +1,299 @@
 /* ============================================================
-   SECCIÓN PROYECTOS
+   SECCIÓN PROYECTOS — carrusel loop infinito con drag
+   Misma técnica de loop que Habilidades (translateX -50%).
    Usa variables definidas en index.css (.dark / .light)
    ============================================================ */
 
 .proyectos-section {
-  /* Borde superior de separación entre secciones */
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  border-top: 1px solid var(--color-border);
+  padding-left: calc(100vw - 84%);
+  padding-right: calc(100vw - 84%);
+}
+
+/* Grid etiqueta | descripción */
+.proyectos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.proyectos-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.proyectos-descripcion {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================================
+   CARRUSEL
+   ============================================================ */
+
+/* Rompe el padding y ocupa el viewport completo */
+.proyectos-carrusel-outer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+/* Máscara de difuminado lateral — igual que en Habilidades */
+.proyectos-carrusel-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+/*
+ * Track — el loop JS aplica transform inline cada frame.
+ * Sin animation ni transition para no interferir con el RAF.
+ */
+.proyectos-carrusel-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  cursor: grab;
+  will-change: transform;
+  padding: 0.75rem 0;
+  /* Evita que el navegador intente animar el transform */
+  transition: none;
+}
+
+.proyectos-carrusel-track:active {
+  cursor: grabbing;
+}
+
+/*
+ * Grupo = una copia completa de los 4 proyectos.
+ * padding-right incluye el espacio que ocupará el separador ::after
+ * sin afectar el ancho real del grupo (mismo truco que en Habilidades).
+ */
+.proyectos-grupo {
+  display: flex;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding-left: 1.25rem;
+  /* Reserva espacio para el separador sin sumar ancho al track */
+  padding-right: 3rem;
+  position: relative;
+}
+
+/* Línea separadora entre grupo A y grupo B */
+.proyectos-grupo::after {
+  content: "";
+  position: absolute;
+  right: 1.25rem;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background-color: var(--color-border);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ============================================================
+   TARJETA DE PROYECTO — <a> completo clickeable
+   ============================================================ */
+
+.proyecto-card {
+  flex: 0 0 clamp(260px, 34vw, 400px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: inherit;
+  /* Evita que el drag arrastre el enlace */
+  user-select: none;
+  -webkit-user-drag: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.proyecto-card:hover {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 1px var(--color-accent-blue), var(--shadow-card);
+  transform: translateY(-3px);
+}
+
+/* Imagen / placeholder 16:9 */
+.proyecto-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.proyecto-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Tag de categoría flotante sobre la imagen */
+.proyecto-tag {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fdffff;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+/* Cuerpo */
+.proyecto-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  flex: 1;
+}
+
+.proyecto-titulo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.proyecto-descripcion {
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* "Ver más →" alineado a la derecha */
+.proyecto-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-accent-blue);
+  align-self: flex-end;
+  margin-top: auto;
+  padding-top: 0.25rem;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.proyecto-card:hover .proyecto-link {
+  gap: 0.5rem;
+  color: var(--color-primary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width: 768px) {
+  .proyectos-grid {
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .proyectos-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .proyectos-grid,
+  .proyectos-label-col,
+  .proyectos-intro {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Una tarjeta por pantalla en mobile */
+  .proyecto-card {
+    flex: 0 0 80vw;
+  }
+
+  /* Máscara más estrecha en mobile */
+  .proyectos-carrusel-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 3%,
+      black 97%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 3%,
+      black 97%,
+      transparent 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proyectos-carrusel-track {
+    animation: none !important;
+  }
+
+  .proyecto-card {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .proyecto-card:hover {
+    transform: none;
+  }
 }

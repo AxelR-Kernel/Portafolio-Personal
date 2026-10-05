@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6c70e5" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#78a4f6" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#g)"/>
+  <rect x="60" y="60" width="1160" height="600" rx="12" fill="rgba(0,0,0,0.15)"/>
+  <text x="640" y="330" font-family="monospace" font-size="48" fill="white" text-anchor="middle" opacity="0.9">Sistema Biométrico</text>
+  <text x="640" y="400" font-family="monospace" font-size="28" fill="white" text-anchor="middle" opacity="0.6">Captura 1 / 3</text>
+  <text x="640" y="460" font-family="monospace" font-size="20" fill="white" text-anchor="middle" opacity="0.4">[ reemplazar con captura real ]</text>
+</svg>
