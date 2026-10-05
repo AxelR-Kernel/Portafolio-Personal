@@ -43,7 +43,7 @@
 
 /* Rompe el padding y ocupa el viewport completo */
 .proyectos-carrusel-outer {
-  width: 100vw;
+  width: calc(100vw - 5%);
   position: relative;
   left: 50%;
   transform: translateX(-50%);
